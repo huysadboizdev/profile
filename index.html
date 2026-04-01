@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quang-Huy Ha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/jpg" href="./img/mobile.jpg">
+    <script>
+        // Extend Tailwind configuration for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-bar {
+            width: 0;
+            transition: width 1.5s ease-in-out;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark mode transition */
+        .dark-mode-transition {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Theme toggle animation */
+        .theme-toggle-icon {
+            transition: transform 0.5s ease;
+        }
+
+        .animate-spin-once {
+            animation: spin 0.5s ease-in-out;
+        }
+
+        .interest-card-light {
+            background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 100%);
+        }
+
+        .interest-image-contain {
+            object-fit: contain;
+            padding: 1.5rem;
+        }
+
+        .interest-overlay-soft {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.86) 12%, rgba(0, 0, 0, 0.28) 52%, rgba(0, 0, 0, 0.04) 100%);
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans dark-mode-transition bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full bg-white dark:bg-gray-800 shadow-md z-50 transition-all duration-500 dark-mode-transition"
+        id="navbar">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold text-blue-600 dark:text-blue-400">Quang-Huy Ha</a>
+
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="#about"
+                        class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">About</a>
+                    <a href="#education"
+                        class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Education</a>
+                    <a href="#activities"
+                        class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Activities</a>
+                    <a href="#skills"
+                        class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Skills</a>
+                    <a href="#projects"
+                        class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Projects</a>
+                    <a href="#contact"
+                        class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Contact</a>
+
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="theme-toggle"
+                        class="ml-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i id="theme-toggle-dark-icon"
+                            class="fas fa-moon text-gray-800 dark:text-transparent theme-toggle-icon hidden"></i>
+                        <i id="theme-toggle-light-icon"
+                            class="fas fa-sun text-transparent dark:text-yellow-300 theme-toggle-icon hidden"></i>
+                    </button>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <!-- Dark Mode Toggle Button (Mobile) -->
+                    <button id="theme-toggle-mobile"
+                        class="mr-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center focus:outline-none">
+                        <i id="theme-toggle-dark-icon-mobile"
+                            class="fas fa-moon text-gray-800 dark:text-transparent theme-toggle-icon hidden"></i>
+                        <i id="theme-toggle-light-icon-mobile"
+                            class="fas fa-sun text-transparent dark:text-yellow-300 theme-toggle-icon hidden"></i>
+                    </button>
+
+                    <button id="menu-toggle" class="text-gray-600 dark:text-gray-300 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden mt-4 pb-2">
+                <a href="#about"
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">About</a>
+                <a href="#education"
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Education</a>
+                <a href="#skills"
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Skills</a>
+                <a href="#projects"
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Projects</a>
+                <a href="#activities"
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Activities</a>
+                <a href="#footer"
+                    class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero/About Section -->
+    <section id="about" class="pt-32 pb-20 px-6 dark-mode-transition">
+        <div class="container mx-auto section">
+            <div class="flex flex-col md:flex-row items-center">
+                <!-- Profile Image -->
+                <div class="mb-10 md:mb-0 md:mr-12 relative">
+                    <div
+                        class="w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 dark:border-blue-400 shadow-lg">
+                        <img src="./img/huydev.jpg" alt="Profile Image" class="object-fill">
+
+                    </div>
+                    <div
+                        class="absolute -bottom-1 -right-1 bg-blue-600 dark:bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-xl">
+                        <i class="fas fa-code"></i>
+                    </div>
+                </div>
+
+                <!-- Information -->
+                <div class="md:w-2/3">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-2">Quang-Huy Ha</h1>
+                    <h2 class="text-2xl text-blue-600 dark:text-blue-400 font-semibold mb-4">Mobile App Developer</h2>
+
+                    <div class="mb-6 flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-600 dark:text-blue-400 mr-2"></i>
+                            <span>Ha Noi, Vietnam</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-blue-600 dark:text-blue-400 mr-2"></i>
+                            <span>huydev204@gmail.com</span>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                        As a Mobile App Developer, I am always eager to explore and continuously learn to gain experience in the field.
+                        I can develop mobile applications based on your requirements and provide consulting to help refine your ideas.
+                    </p>
+
+                    <div class="flex space-x-4">
+                        <a href="#footer"
+                            class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 py-3 rounded-full transition-colors duration-300 shadow-md">
+                            Contact Me
+                        </a>
+                        <a href="#projects"
+                            class="border-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 px-6 py-3 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors duration-300">
+                            View Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+<section id="education" class="py-20 bg-gray-100 dark:bg-gray-800 px-6 dark-mode-transition">
+    <div class="container mx-auto section">
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-12 text-center">Education</h2>
+
+        <div
+            class="flex flex-col md:flex-row items-center bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+            <div class="md:w-1/3 p-8 flex justify-center items-center">
+                <img src="./img/gr.jpg" alt="FPT Greenwich University Logo" class="object-fill">
+            </div>
+            <div class="md:w-2/3 p-8 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-600">
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Bachelor of Information Technology
+                </h3>
+                <h4 class="text-xl text-blue-600 dark:text-blue-400 font-semibold mb-4">FPT Greenwich Vietnam, Hanoi
+                    Campus</h4>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">2022 - 2026</p>
+                <div class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <p>With a high-quality curriculum taught entirely in English, I consistently strive to absorb the
+                        knowledge provided to develop my skills and apply them in real-world scenarios.</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://skillshop.credential.net/profile/huysadboiz/wallet#gs.fhl9mv" target="_blank" rel="noopener noreferrer" class="block mb-8">
+            <div
+                class="flex flex-col md:flex-row items-center bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="md:w-1/3 p-8 flex justify-center items-center">
+                    <img src="./img/2.png" alt="Google Analytics Certificate" class="object-fill">
+                </div>
+                <div class="md:w-2/3 p-8 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-600">
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Google Analytics Certificate</h3>
+                    <h4 class="text-xl text-blue-600 dark:text-blue-400 font-semibold mb-4">Manage GA4 Data and Learn to Read Reports</h4>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Use GA4 with other tools and data sources.</p>
+                    <div class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <p>Credential profile for analytics coursework and reporting practice.</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="https://academic.oup.com/jcde/article/12/5/41/8119431" target="_blank" rel="noopener noreferrer" class="block">
+            <div
+                class="flex flex-col md:flex-row items-center bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="md:w-1/3 p-8 flex justify-center items-center">
+                    <img src="./img/huydev123.png" alt="Research paper cover" class="object-fill">
+                </div>
+                <div class="md:w-2/3 p-8 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-600">
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Unsupervised industrial anomaly detection using paired well-lit and low-light images</h3>
+                    <h4 class="text-xl text-blue-600 dark:text-blue-400 font-semibold mb-4">Journal of Computational Design and Engineering</h4>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Research reference related to computer vision workflows.</p>
+                    <div class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <p>Article used as a study reference for Python-based image analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+
+
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-6 dark-mode-transition">
+        <div class="container mx-auto section">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-12 text-center">Skills</h2>
+    
+        <!-- Technical Skills -->
+        <div class="mb-16">
+            <div class="flex items-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Experienced With Languages And Frameworks</h3>
+            </div>
+        
+            <!-- Programming Languages -->
+            <div class="mb-6">
+                <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-3">Experienced With Languages</h4>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-blue-600 text-white rounded-md font-medium">Java</span>
+                    <!-- <span class="px-3 py-1 bg-red-600 text-white rounded-md font-medium">Kotlin</span> -->
+                    <span class="px-3 py-1 bg-yellow-500 text-black rounded-md font-medium">JavaScript</span>
+                    <span class="px-3 py-1 bg-blue-500 text-white rounded-md font-medium">Python</span>
+                    <span class="px-3 py-1 bg-blue-700 text-white rounded-md font-medium">C++</span>
+                    <span class="px-3 py-1 bg-green-600 text-white rounded-md font-medium">C#</span>
+                    <!-- <span class="px-3 py-1 bg-orange-600 text-white rounded-md font-medium">HTML5</span> -->
+                    <!-- <span class="px-3 py-1 bg-blue-600 text-white rounded-md font-medium">CSS3</span> -->
+                    <span class="px-3 py-1 bg-purple-500 text-white rounded-md font-medium">PHP</span>
+                </div>
+            </div>
+        
+            <!-- Frameworks & Libraries -->
+            <div class="mb-6">
+                <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-3">Frameworks & Libraries</h4>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-blue-400 text-white rounded-md font-medium">React</span>
+                    <span class="px-3 py-1 bg-green-600 text-white rounded-md font-medium">Node.js</span>
+                    <span class="px-3 py-1 bg-cyan-500 text-white rounded-md font-medium">Tailwind CSS</span>
+                    <span class="px-3 py-1 bg-purple-600 text-white rounded-md font-medium">Bootstrap</span>
+                    <!-- <span class="px-3 py-1 bg-purple-600 text-white rounded-md font-medium">Swift</span> -->
+                    <span class="px-3 py-1 bg-purple-600 text-white rounded-md font-medium">Native Scripts</span>
+                    <span class="px-3 py-1 bg-purple-600 text-white rounded-md font-medium">React Native</span>
+                    <!-- <span class="px-3 py-1 bg-purple-600 text-white rounded-md font-medium">Flutter</span> -->
+
+                </div>
+            </div>
+        
+            <!-- Databases & Tools -->
+            <div class="mb-6">
+                <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-3">Databases & Tools</h4>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-green-500 text-white rounded-md font-medium">MongoDB</span>
+                    <span class="px-3 py-1 bg-blue-400 text-white rounded-md font-medium">MySQL</span>
+                    <span class="px-3 py-1 bg-red-600 text-white rounded-md font-medium">SQL Server</span>
+                    <span class="px-3 py-1 bg-purple-500 text-white rounded-md font-medium">phpMyAdmin</span>
+                    <span class="px-3 py-1 bg-green-600 text-white rounded-md font-medium">Studio3T</span>
+                    <!-- <span class="px-3 py-1 bg-red-500 text-white rounded-md font-medium">SSMS</span> -->
+                </div>
+            </div>
+        
+            <!-- Architecture & Deployment -->
+            <div class="mb-6">
+                <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-3">Architecture & Deployment</h4>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-black text-white rounded-md font-medium">Google Play</span>
+                    <span class="px-3 py-1 bg-blue-600 text-white rounded-md font-medium">VPS</span>
+                    <span class="px-3 py-1 bg-orange-500 text-white rounded-md font-medium">TestFlight</span>
+                    <span class="px-3 py-1 bg-orange-600 text-white rounded-md font-medium">XAMPP</span>
+                    <span class="px-3 py-1 bg-green-700 text-white rounded-md font-medium">OOP</span>
+                    <span class="px-3 py-1 bg-blue-500 text-white rounded-md font-medium">Apple certificate</span>
+                    <span class="px-3 py-1 bg-blue-600 text-white rounded-md font-medium">Agile</span>
+                </div>
+            </div>
+        </div>
+            <div>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-8">Soft Skills</h3>
+            
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Soft Skill Items -->
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Self-learning & Research</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Ability to independently research professional materials and
+                            continuously update knowledge.</p>
+                    </div>
+            
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Bilingual Presentation Skills</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Ability to deliver clear, structured presentations in both
+                            English and Vietnamese.</p>
+                    </div>
+            
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Effective Communication</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Professional communication skills with adaptability in various
+                            situations.</p>
+                    </div>
+            
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Team & Independent Work</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Capable of working effectively in teams and independently with
+                            excellent time management skills.</p>
+                    </div>
+            
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Analytical & Problem-solving</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Ability to logically analyze issues and develop effective
+                            solutions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-100 dark:bg-gray-800 px-6 dark-mode-transition">
+        <div class="container mx-auto section">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-12 text-center">Projects</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project Card 1 -->
+                <div class="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden project-card transition-all duration-300">
+                    <img src="./img/1.jpg" alt="App Mobile" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">App Mobile</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Allows users to safely buy and sell services, with user management, payment processing, service
+                            administration, and more.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">MongoDB</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">Express</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">TypeScript</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">Node.js</span>
+                        </div>
+                        <a href="https://github.com/huysadboizdev/WebApp.git"
+                            class="text-blue-600 dark:text-blue-400 font-semibold flex items-center hover:text-blue-700 dark:hover:text-blue-300">
+                            Go to:<i class="fas fa-arrow-right ml-2">App</i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                 
+                <div class="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden project-card transition-all duration-300">
+                    <img src="./img/1.png" alt="App Mobile" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Coffee App</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            This app allows users to order food and drinks to take home, and can pay in 2 different ways,
+                             the app fully notifies each time the status changes and secures user information.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">MongoDB</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">Express</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">TypeScript</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">Node.js</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">React Native</span>
+                            <span
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm rounded-full">Expo</span>
+                        </div>
+                        
+                        <a href="https://github.com/huysadboizdev/Apptrasua.git"
+                            class="text-blue-600 dark:text-blue-400 font-semibold flex items-center hover:text-blue-700 dark:hover:text-blue-300">
+                            Go to:<i class="fas fa-arrow-right ml-2">Coffee App</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+     <!-- Interests Section -->
+     <section id="activities" class="py-20 px-6 dark-mode-transition">
+        <div class="container mx-auto section">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-12 text-center">Areas of Interest</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Activity 1 -->
+                <div class="relative overflow-hidden rounded-xl group">
+                    <img src="./img/mobile.jpg" alt="iOS app development"
+                        class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">iOS App Development</h3>
+                            <p class="text-gray-200">
+                                Learning how to build and maintain mobile apps for the iOS ecosystem.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+         <!-- Activity 2 -->
+         <div class="relative overflow-hidden rounded-xl group interest-card-light">
+            <img src="./img/dev.png" alt="Code signing and testing"
+                class="w-full h-64 interest-image-contain transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 interest-overlay-soft flex items-end">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2">Code Signing & Testing</h3>
+                    <p class="text-gray-200">
+                        Exploring certificates, provisioning, and testing workflows used in iOS development.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+         <!-- Activity 3 -->
+         <div class="relative overflow-hidden rounded-xl group">
+            <img src="./img/grw.jpg" alt="Documentation and learning"
+                class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2">Documentation & Certification Learning</h3>
+                    <p class="text-gray-200">
+                        Improving knowledge through technical documents, courses, and platform requirements.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </section>
+
+    
+
+<!-- Footer -->
+<footer id="footer" class="py-12 bg-gray-800 dark:bg-gray-900 text-white px-6 dark-mode-transition">
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!-- Column 1: About -->
+            <div>
+                <h3 class="text-2xl font-bold text-blue-400 mb-6">Quang-Huy Ha</h3>
+                <p class="text-gray-300 mb-4">Portfolio showcasing my journey, skills and projects
+                    in app development.</p>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div>
+                <h3 class="text-xl font-bold text-blue-400 mb-6">Quick Links</h3>
+                <ul class="space-y-3">
+                    <li>
+                        <a href="#about"
+                            class="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                            <i class="fas fa-user mr-3 text-blue-500"></i>
+                            <span>About Me</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#projects"
+                            class="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                            <i class="fas fa-code mr-3 text-blue-500"></i>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#skills"
+                            class="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                            <i class="fas fa-laptop-code mr-3 text-blue-500"></i>
+                            <span>Skills</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact"
+                            class="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                            <i class="fas fa-envelope mr-3 text-blue-500"></i>
+                            <span>Contact</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Information -->
+            <div>
+                <h3 class="text-xl font-bold text-blue-400 mb-6">Get In Touch</h3>
+                <ul class="space-y-4 grid grid-cols-2 gap-4">
+                    <li class="flex items-center">
+                        <div class="bg-blue-600 rounded-full p-2 mr-4">
+                            <i class="fab fa-facebook-f text-white"></i>
+                        </div>
+                        <a href="https://www.facebook.com/huy.haquang.39395/"
+                            class="text-gray-300 hover:text-blue-400 transition-colors duration-300">Hà Quang Huy</a>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="bg-blue-600 rounded-full p-2 mr-4">
+                            <i class="fab fa-github text-white"></i>
+                        </div>
+                        <a href="https://github.com/huysadboizdev" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">huydev</a>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="bg-blue-600 rounded-full p-2 mr-4">
+                            <i class="fas fa-phone text-white"></i>
+                        </div>
+                        <a href="https://zalo.me/0763076124" class="text-gray-300 hover:text-blue-400 transition-colors duration-300">0986.774.322</a>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="bg-blue-600 rounded-full p-2 mr-4">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
+                        <a href="mailto:huydev204@gmail.com"
+                            class="text-gray-300 hover:text-blue-400 transition-colors duration-300">huydev204@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="border-t border-gray-700 dark:border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 mb-4 md:mb-0">Thank you for viewing my profile <i class="fas fa-heart text-red-500"></i></p>
+            <div class="flex space-x-4">
+                <p class="text-gray-400">&copy; 2025 Quang-Huy Ha. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <!-- Back To Top Button -->
+    <button id="back-to-top"
+        class="fixed bottom-6 right-6 bg-blue-600 dark:bg-blue-500 text-white rounded-full p-3 hidden shadow-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all duration-300 focus:outline-none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Section Visibility Animation
+        const sections = document.querySelectorAll('.section');
+
+        const revealSection = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Animate skill bars in the skills section
+                    if (entry.target.closest('#skills')) {
+                        const skillBars = entry.target.querySelectorAll('.skill-bar');
+                        skillBars.forEach(bar => {
+                            bar.style.width = bar.dataset.width;
+                        });
+                    }
+                }
+            });
+        };
+
+        const sectionObserver = new IntersectionObserver(revealSection, {
+            root: null,
+            threshold: 0.15
+        });
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (lastScrollY < window.scrollY) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-3');
+            } else {
+                navbar.classList.add('py-3');
+                navbar.classList.remove('py-2');
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // Dark Mode Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const themeToggleDarkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
+        const themeToggleLightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
+
+        // Check for saved theme preference or use the system preference
+        if (localStorage.getItem('color-theme') === 'dark' ||
+            (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleLightIconMobile.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeToggleDarkIcon.classList.remove('hidden');
+            themeToggleDarkIconMobile.classList.remove('hidden');
+        }
+
+        const toggleTheme = () => {
+            // Toggle theme
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                themeToggleDarkIcon.classList.remove('hidden');
+                themeToggleLightIcon.classList.add('hidden');
+                themeToggleDarkIconMobile.classList.remove('hidden');
+                themeToggleLightIconMobile.classList.add('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                themeToggleDarkIcon.classList.add('hidden');
+                themeToggleLightIcon.classList.remove('hidden');
+                themeToggleDarkIconMobile.classList.add('hidden');
+                themeToggleLightIconMobile.classList.remove('hidden');
+            }
+
+            // Animation for toggle
+            document.querySelector('.theme-toggle-icon:not(.hidden)').classList.add('animate-spin-once');
+            setTimeout(() => {
+                document.querySelector('.theme-toggle-icon').classList.remove('animate-spin-once');
+            }, 500);
+        };
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleBtnMobile.addEventListener('click', toggleTheme);
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('hidden');
+            } else {
+                backToTopBtn.classList.add('hidden');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
