@@ -16,6 +16,8 @@ Open `http://localhost:8000/`. The site also works beneath a project URL such as
 
 The site needs no build step or npm installation. Keep the existing static hosting configuration. For GitHub Pages configured to serve this branch, publish the repository root containing `index.html`, `style.css`, `script.js`, `theme-init.js`, `assets/` and `projects/`.
 
+After editing CSS or JavaScript, run `python tools/version_assets.py` before publishing. This refreshes content-based URL versions on all three pages so cached assets cannot keep an older layout. The static hosting tests verify these versions. Line endings are normalized for consistent versions across Windows and Linux.
+
 Review your changes and then commit/push using your usual Git workflow. Do not change the Pages source to the parent workspace folder: this repository is the inner `profile` directory.
 
 ## Files

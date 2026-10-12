@@ -1,7 +1,8 @@
 """Checks for static-hosting regressions; no third-party dependencies."""
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit, unquote
+from urllib.parse import urlsplit, unquote, parse_qs
+from hashlib import sha256
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,6 +32,17 @@ class Document(HTMLParser):
 
 
 class StaticHostingTests(unittest.TestCase):
+    def test_css_and_scripts_use_content_versions(self):
+        for path in [ROOT / "index.html", *sorted((ROOT / "projects").glob("*.html"))]:
+            for target in Document(path).assets:
+                url = urlsplit(target)
+                if url.scheme or url.netloc or not url.path.endswith((".css", ".js")):
+                    continue
+                with self.subTest(page=path.name, asset=url.path):
+                    asset = (path.parent / unquote(url.path)).resolve()
+                    version = sha256(asset.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:12]
+                    self.assertEqual(parse_qs(url.query).get("v"), [version], "Asset URL must change with its contents")
+
     def test_navigation_and_local_resources_resolve_under_repo_subpath(self):
         for path in [ROOT / "index.html", *sorted((ROOT / "projects").glob("*.html"))]:
             with self.subTest(page=path.name):
